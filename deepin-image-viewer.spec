@@ -1,6 +1,6 @@
 Name:           deepin-image-viewer
 Version:        1.3.17
-Release:        1
+Release:        2
 Summary:        Deepin Image Viewer
 License:        GPLv3
 URL:            https://github.com/linuxdeepin/deepin-image-viewer
@@ -10,6 +10,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  freeimage-devel
 BuildRequires:  qt5-linguist 
 BuildRequires:  qt5-qttools-devel
+BuildRequires:  dtkcore2-devel
 BuildRequires:  dtkwidget2-devel
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Concurrent)
@@ -63,5 +64,8 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop ||:
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 %changelog
+* Fri Aug 28 2020 chenbo pan <panchenbo@uniontech.com> - 1.3.17-2
+- fix compile fail
+
 * Thu Jul 30 2020 openEuler Buildteam <buildteam@openeuler.org> - 1.3.17-1
 - Package init
