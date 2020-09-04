@@ -1,6 +1,6 @@
 Name:           deepin-image-viewer
 Version:        1.3.17
-Release:        2
+Release:        3
 Summary:        Deepin Image Viewer
 License:        GPLv3
 URL:            https://github.com/linuxdeepin/deepin-image-viewer
@@ -28,6 +28,7 @@ BuildRequires:  pkgconfig(libstartup-notification-1.0)
 BuildRequires:  pkgconfig(xcb-util)
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
+BuildRequires:  libXext-devel
 Requires:       hicolor-icon-theme
 
 %description
@@ -64,6 +65,9 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop ||:
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 %changelog
+* Fri Sep 4 2020 chenbo pan <panchenbo@uniontech.com> - 1.3.17-3
+- fix compile fail
+
 * Fri Aug 28 2020 chenbo pan <panchenbo@uniontech.com> - 1.3.17-2
 - fix compile fail
 
