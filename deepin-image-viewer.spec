@@ -1,34 +1,28 @@
 Name:           deepin-image-viewer
-Version:        1.3.17
-Release:        3
+Version:        5.6.3.49
+Release:        1
 Summary:        Deepin Image Viewer
 License:        GPLv3
 URL:            https://github.com/linuxdeepin/deepin-image-viewer
-Source0:        %{name}-%{version}.tar.gz	
+Source0:        %{name}_%{version}.tar.gz
 
 BuildRequires:  gcc-c++
+BuildRequires: qt5-devel
+
 BuildRequires:  freeimage-devel
-BuildRequires:  qt5-linguist 
-BuildRequires:  qt5-qttools-devel
-BuildRequires:  dtkcore2-devel
-BuildRequires:  dtkwidget2-devel
-BuildRequires:  pkgconfig(Qt5Core)
-BuildRequires:  pkgconfig(Qt5Concurrent)
-BuildRequires:  pkgconfig(Qt5DBus)
-BuildRequires:  pkgconfig(Qt5Gui)
-BuildRequires:  pkgconfig(Qt5OpenGL)
-BuildRequires:  pkgconfig(Qt5PrintSupport)
-BuildRequires:  pkgconfig(Qt5Sql)
-BuildRequires:  pkgconfig(Qt5Svg)
-BuildRequires:  pkgconfig(Qt5X11Extras)
+BuildRequires:  dtkcore-devel
+BuildRequires:  dtkwidget-devel
+BuildRequires:  dtkgui-devel
 BuildRequires:  pkgconfig(gio-unix-2.0)
 BuildRequires:  pkgconfig(libraw)
 BuildRequires:  pkgconfig(libexif)
 BuildRequires:  pkgconfig(libstartup-notification-1.0)
 BuildRequires:  pkgconfig(xcb-util)
+BuildRequires:  pkgconfig(xext)
+BuildRequires:  udisks2-qt5-devel
+BuildRequires:  libgio-qt libgio-qt-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
-BuildRequires:  libXext-devel
 Requires:       hicolor-icon-theme
 
 %description
@@ -36,20 +30,18 @@ Requires:       hicolor-icon-theme
 
 %prep
 %setup -q
-sed -i 's|lrelease|lrelease-qt5|g' viewer/generate_translations.sh
-sed -i 's|lrelease|lrelease-qt5|g' viewer/viewer.pro
-
 
 %build
-
-%qmake_qt5 PREFIX=%{_prefix}
+# help find (and prefer) qt5 utilities, e.g. qmake, lrelease
+export PATH=%{_qt5_bindir}:$PATH
+mkdir build && pushd build
+%qmake_qt5 PREFIX=%{_prefix} VERSION=%{version} DEFINES+="VERSION=%{version}" ../
 %make_build
+popd
 
 %install
-%make_install INSTALL_ROOT=%{buildroot}
+%make_install -C build INSTALL_ROOT="%buildroot"
 
-%check
-desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop ||:
 
 %files
 %doc README.md
@@ -59,12 +51,13 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/%{name}.desktop ||:
 %{_datadir}/dbus-1/services/*.service
 %{_datadir}/%{name}/
 %{_datadir}/dman/%{name}/
-#%{_metainfodir}/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/deepin/apps/scalable/%{name}.svg
 %{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 %changelog
+* Mon Jul 12 2021 weidong <weidong@uniontech.com> - 5.6.3.49-3
+- Update 5.6.3.49
+
 * Fri Sep 4 2020 chenbo pan <panchenbo@uniontech.com> - 1.3.17-3
 - fix compile fail
 
